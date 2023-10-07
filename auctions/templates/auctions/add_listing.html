@@ -8,7 +8,7 @@
 
     <h1 style="text-align: center; padding: 2rem 0;">Add a listing</h1>
 
-    <form action="{% url 'add_listing' %}" method="POST" class="listing">
+    <form action="{% url 'add_listing' %}" method="POST" class="listing" enctype="multipart/form-data">
         {% csrf_token %}
         {{ form.as_p }}
         <button type="submit">Create Listing</button>

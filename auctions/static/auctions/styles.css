@@ -904,7 +904,8 @@ form.listing .category {
 }
 
 form.listing .is-active {
-  margin-left: 0.5rem;
+  margin-left: 1rem;
+  margin-bottom: 2rem;
 }
 
 form.listing button {

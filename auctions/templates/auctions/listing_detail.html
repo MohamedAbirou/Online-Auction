@@ -22,7 +22,11 @@
 {% endif %}
 <section id="prodetails" class="section-p1">
     <div class="single-pro-image">
-        <img src="{{ listing.image_url }}" width="100%" alt="">
+        {% if listing.image %}
+            <img src="{{ listing.image.url }}" alt="Listing Image" width="100%">
+        {% elif listing.image_url %}
+            <img src="{{ listing.image_url }}" alt="Listing Image" width="100%">
+        {% endif %}
         <div class="seller-info">
             <h3 class="mb-4"><i class="fa-solid fa-user"></i> Meet The Seller</h3>
             <h4 class="mb-2">{{ listing.user.username }}</h4>

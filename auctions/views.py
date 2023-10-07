@@ -207,12 +207,17 @@ def add_listing(request):
     profile, created = Profile.objects.get_or_create(user=request.user)
     watchlist = profile.watchlist.all()
     if request.method == 'POST':
-        form = AddListingForm(request.POST)
+        form = AddListingForm(request.POST, request.FILES)
         if form.is_valid():
-            listing = form.save(commit=False)
-            listing.user = request.user
-            listing.save()
-            return redirect('index')
+            image = form.cleaned_data['image']
+            image_url = form.cleaned_data['image_url']
+            if image and image_url:
+                form.add_error(None, "Please only provide either an image file or an image URL, not both.")
+            else:
+                listing = form.save(commit=False)
+                listing.user = request.user
+                listing.save()
+                return redirect('index')
     else:
             form = AddListingForm()
     

@@ -50,7 +50,11 @@
         {% for listing in active_listings %}
         <div class="pro">
             <a href="{% url 'listing_detail' listing.id %}">
-                <img src="{{ listing.image_url }}" alt="">
+                {% if listing.image %}
+                    <img src="{{ listing.image.url }}" alt="Listing Image">
+                {% elif listing.image_url %}
+                    <img src="{{ listing.image_url }}" alt="Listing Image">
+                {% endif %}
             </a>
             <div class="des">
                 <span>{{ listing.category }}</span>
@@ -82,7 +86,11 @@
         {% for listing in closed_listings %}
         <div class="pro">
                 <a href="{% url 'listing_detail' listing.id %}">
-                    <img src="{{ listing.image_url }}" alt="">
+                    {% if listing.image %}
+                        <img src="{{ listing.image.url }}" alt="Listing Image">
+                    {% elif listing.image_url %}
+                        <img src="{{ listing.image_url }}" alt="Listing Image">
+                    {% endif %}
                 </a>
                     <div class="des">
                         <span>{{ listing.category }}</span>
