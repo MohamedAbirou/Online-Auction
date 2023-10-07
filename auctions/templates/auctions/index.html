@@ -1,0 +1,118 @@
+{% extends "auctions/layout.html" %}
+{% load static %}
+
+{% block body %}
+
+  <section class="hero" id="hero" style="background-image: url('{% static 'auctions/images/hero_1.jpg' %}');">
+    <h1 style="text-align: center;">
+        The best place
+        <span style="display: block; font-weight: bold;color: #c9bb00;">to buy and sell!</span>
+        <img class="banner-classic-figure" src="https://livedemo00.template-help.com/wt_53883/images/banner-arrow-184x147.png" alt="">
+    </h1>
+    <a class="button button-icon button-icon-right button-black button-lg" href="{% url 'register' %}">
+        <span class="icon novi-icon fa fa-chevron-right"></span>
+        Register
+    </a>
+</section>
+
+<section id="feature" class="section-p1">
+    <div class="fe-box">
+        <img src="{% static 'auctions/images/f1.png' %}" alt="">
+        <h6>Free Shipping</h6>
+    </div>
+    <div class="fe-box">
+        <img src="{% static 'auctions/images/f2.png' %}" alt="">
+        <h6>Online Order</h6>
+    </div>
+    <div class="fe-box">
+        <img src="{% static 'auctions/images/f3.png' %}" alt="">
+        <h6>Save Money</h6>
+    </div>
+    <div class="fe-box">
+        <img src="{% static 'auctions/images/f4.png' %}" alt="">
+        <h6>Promotions</h6>
+    </div>
+    <div class="fe-box">
+        <img src="{% static 'auctions/images/f5.png' %}" alt="">
+        <h6>Happy Sell</h6>
+    </div>
+    <div class="fe-box">
+        <img src="{% static 'auctions/images/f6.png' %}" alt="">
+        <h6>24/7 Support</h6>
+    </div>
+</section>
+
+
+<section id="product1" class="section-p1">
+    <h2>Active Auction Listings</h2>
+    <p>Summer Collection New Modern Design</p>
+    <div class="pro-container">
+        {% for listing in active_listings %}
+        <div class="pro">
+            <a href="{% url 'listing_detail' listing.id %}">
+                <img src="{{ listing.image_url }}" alt="">
+            </a>
+            <div class="des">
+                <span>{{ listing.category }}</span>
+                <h5>{{ listing.title }}</h5>
+                <div class="star">
+                    <h4>${{ listing.current_bid }}</h4>
+                    <form action="{% url 'add_to_watchlist' listing.id %}" method="POST">
+                        {% csrf_token %}
+                        <button type="submit" style="border: none; cursor: pointer;background-color: transparent;"><i class="fa fa-heart" style="font-size: 21px;color: red; margin-top: 9px;" title="Watchlist"></i></button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</section>
+
+
+<section id="banner" class="section-m1" style="background-image: url('{% static 'auctions/images/banner2.jpg' %}');">
+    <h4>Repair Services</h4>
+    <h2>Up to <span>70% Off</span> - All t-shirts & Accessories</h2>
+    <button class="normal"><a href="{% url 'listings' %}" style="text-decoration: none; color: #000;">Explore More</a></button>
+</section>
+
+<section id="product1" class="section-p1">
+    <h2>Closed Auction Listings</h2>
+    <p>Summer Collection New Modern Design</p>
+    <div class="pro-container">
+        {% for listing in closed_listings %}
+        <div class="pro">
+                <a href="{% url 'listing_detail' listing.id %}">
+                    <img src="{{ listing.image_url }}" alt="">
+                </a>
+                    <div class="des">
+                        <span>{{ listing.category }}</span>
+                        <h5>{{ listing.title }}</h5>
+                        <div class="star">
+                            <h4>${{ listing.current_bid }}</h4>
+                            <form action="{% url 'add_to_watchlist' listing.id %}" method="POST">
+                                {% csrf_token %}
+                                <button type="submit" style="border: none; cursor: pointer;background-color: transparent;"><i class="fa fa-heart" style="font-size: 21px;color: red; margin-top: 9px;" title="Watchlist"></i></button>
+                            </form>
+                            {% if listing.is_active == False %}
+                                <span class="btn btn-danger text-white mt-2 pe-none">This is auction is closed.</span>
+                            {% endif %}
+                        </div>
+                    </div>
+            </div>
+        {% endfor %}
+    </div>
+</section>
+
+<section id="newsletter" class="section-p1 section-m1">
+    <div class="newstext">
+        <h4>Sign Up For Newsletters</h4>
+        <p>Get E-mail updates about our latest shop and <span>special offers.</span></p>
+    </div>
+    <div class="form">
+        <input type="text" placeholder="Your email address">
+        <button class="normal">Sign Up</button>
+    </div>
+</section>
+
+
+{% endblock %}

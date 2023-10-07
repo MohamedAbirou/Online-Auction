@@ -1,0 +1,147 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+
+{% if not listing.is_active and user == listing.winner %}
+    <p class="success-message" >Congratulations! You have won this auction.</p>
+{% endif %}
+
+
+{% if messages %}
+    {% for message in messages %}
+        {% if 'success' == message.tags %}
+            <p style="color: #155724; background-color: #d4edda; border-color: #c3e6cb; padding: 1rem 1rem; margin: 0 80px; border-radius: 5px;">{{ message }}</p>
+        {% elif 'error' == message.tags %}
+            <p style="color: #842029; background-color: #f8d7da; border-color: #f5c2c7; padding: 1rem 1rem; margin: 0 80px; border-radius: 5px;">{{ message }}</p>
+        {% elif 'warning' == message.tags %}
+            <p style="color: #664d03; background-color: #fff3cd; border-color: #ffecb5; padding: 1rem 1rem; margin: 0 80px; border-radius: 5px;">{{ message }}</p>
+        {% else %}
+            
+        {% endif %}
+    {% endfor %}
+{% endif %}
+<section id="prodetails" class="section-p1">
+    <div class="single-pro-image">
+        <img src="{{ listing.image_url }}" width="100%" alt="">
+        <div class="seller-info">
+            <h3 class="mb-4"><i class="fa-solid fa-user"></i> Meet The Seller</h3>
+            <h4 class="mb-2">{{ listing.user.username }}</h4>
+            <h5 class="text-muted" style="font-size: 15px;"><i class="fa-regular fa-clock" style="color: #ffd613; padding-right: .5rem;"></i>Member For: {{ listing.user.date_joined|timesince }}</h5>
+            <h5 class="text-muted" style="font-size: 15px;"><i class="fa-solid fa-heart-pulse" style="color: #fdd613; padding-right: .5rem;"></i>Recent activity: {{ listing.user.last_login }}</h5>
+        </div>
+    </div>
+
+    <div class="single-pro-details">
+        <div style="margin-bottom: .5rem;">
+            {% if listing in watchlist %}
+                <span class="btn btn-secondary text-white mt-2 pe-none">Watchlist</span>
+            {% endif %}
+        </div>
+        {% if listing.is_active == False %}
+            <span class="btn btn-danger text-white mt-1 mb-4 pe-none">This is auction is closed.</span>
+        {% endif %}
+        <h6>{{ listing.category }}</h6>
+        <p class="text-muted" style="font-size: 13px; position: relative; top: -10px;">Published on - {{ listing.created_at }}</p>
+        <h3 class="mt-3" id="pro-name">{{ listing.title }}</h3>
+        {% if listing.current_bid == listing.starting_bid %}
+            <h2 id="pro-price">${{ listing.current_bid }}</h2>
+        {% endif %}
+        {% if listing.current_bid > listing.starting_bid %}
+            <div class="d-flex align-items-center">
+                <p class="text-muted" style="text-decoration: line-through; padding-right: .5rem;">${{ listing.starting_bid }}</p>        
+                <h2 id="pro-price">${{ listing.current_bid }}</h2>
+            </div>
+        {% endif %}
+        <div class="form-buttons">
+            <form action="{% url 'place_bid' listing.id %}" method="POST">
+                {% csrf_token %}
+                <input type="number" name="bid_amount" placeholder="0.00" step="10" min="{{ listing.starting_bid }}">
+                <button type="submit" class="normal" style="margin-right: .5rem;">Place Bid</button>
+            </form>
+            <div class="d-flex align-items-center">
+                {% if user.is_authenticated and user == listing.user and listing.is_active %}
+                    <form action="{% url 'close_auction' listing.id %}" method="POST">
+                        {% csrf_token %}
+                        <input type="submit" class="btn btn-danger" style="width: 100%;height: 2.49rem; font-size: 14px; font-weight: bold" value="Close Auction">
+                    </form>
+                {% endif %}
+                <form action="{% url 'add_to_watchlist' listing.id %}" method="POST">
+                    {% csrf_token %}
+                    <button type="submit" style="border: none; cursor: pointer; background-color: transparent;"><i class="fa fa-heart" style="font-size: 30px;color: red;" title="Watchlist"></i></button>
+                </form>
+            </div>
+        </div>
+        <p style="display: inline;">{{ bids.count }} bid (s) so far. </p>
+        {% for bid in bids %}
+            {% if bid.user == user and bid.listing == listing %}
+                {% if bid.bid_amount == listing.current_bid %}
+                    <p style="display: inline;">Your bid is the current bid.</p>
+                {% endif %}
+            {% endif %}
+        {% endfor %}
+        <h3 class="mt-5" style="font-weight: bold;">Product Details</h3>
+        <span>{{ listing.description }}</span>
+        <div class="my-5">
+            <h3 style="font-weight: bold;">Reviews ({{ comments.count }})</h3>
+            <div id="form-details">
+                {% for comment in comments %}
+                    <div style="border: 1px solid #fdd613; width: 100%; word-wrap: break-word; padding: 10px 5px; box-shadow: 0 0px 10px #fdd61386; border-radius: 3px;margin-bottom: 8rem;margin-top: 1.5rem;">
+                        <h5 class="font-weight-bold" style="font-size: 22px;">{{ comment.user }}</h5>
+                        <p style="font-size: 18px;"> - {{ comment.comment_text }}</p>
+                        <p class="text-muted" style="font-size: 13px;">{{ comment.comment_time }}</p>
+                    </div>
+                {% endfor %}
+                <form action="{% url 'add_comment' listing.id %}" method="POST">
+                    {% csrf_token %}
+                    <span>LEAVE A REVIEW</span>
+                    <h2>We love to hear your feedback</h2>
+                    <textarea name="comment_text" cols="30" rows="10" placeholder="Your review..."></textarea>
+                    <button class="normal">Submit</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<section id="product1" class="section-p1">
+    <h2>Featured Products</h2>
+    <p>Summer Collection New Modern Design</p>
+    <div class="pro-container">
+        {% for listing in active_listings %}
+        <div class="pro">
+                <a href="{% url 'listing_detail' listing.id %}">
+                    <img src="{{ listing.image_url }}" alt="">
+                </a>
+                    <div class="des">
+                        <span>{{ listing.category }}</span>
+                        <h5>{{ listing.title }}</h5>
+                        <div class="star">
+                            <h4>${{ listing.current_bid }}</h4>
+                            <form action="{% url 'add_to_watchlist' listing.id %}" method="POST">
+                                {% csrf_token %}
+                                <button type="submit" style="border: none; cursor: pointer;background-color: transparent;"><i class="fa fa-heart" style="font-size: 21px;color: red; margin-top: 9px;" title="Watchlist"></i></button>
+                            </form>
+                            {% if listing.is_active == False %}
+                                <span class="btn btn-danger text-white mt-2 pe-none">This is auction is closed.</span>
+                            {% endif %}
+                        </div>
+                    </div>
+            </div>
+        {% endfor %}
+    </div>
+</section>
+
+
+<section id="newsletter" class="section-p1 section-m1">
+    <div class="newstext">
+        <h4>Sign Up For Newsletters</h4>
+        <p>Get E-mail updates about our latest shop and <span>special offers.</span></p>
+    </div>
+    <div class="form">
+        <input type="text" placeholder="Your email address">
+        <button class="normal">Sign Up</button>
+    </div>
+</section>
+
+{% endblock %}

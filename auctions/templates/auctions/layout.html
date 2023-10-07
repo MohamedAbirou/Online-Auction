@@ -1,0 +1,132 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Online Auctions</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <script src="https://kit.fontawesome.com/a2c94dfe10.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="{% static 'styles.css' %}" >
+</head>
+<body>
+
+    <section id="header">
+        <a href="{% url 'index' %}">
+            <img src="{% static '/auctions/images/logo.png' %}" class="logo" alt="">
+        </a>
+
+        <div>
+            <ul id="navbar">
+                <li>
+                    <a href="{% url 'index' %}">Home</a>
+                </li>
+                <li>
+                  <a href="{% url 'listings' %}">Buy or Bid</a>
+                </li>
+                <li>
+                  <a href="{% url 'add_listing' %}">Sell</a>
+                </li>
+                <li>
+                    <a href="{% url 'about' %}">About</a>
+                </li>
+                <li>
+                    <a href="{% url 'contact' %}">Contact</a>
+                </li>
+                <div class="wacthlist-account">
+                  {% if user.is_authenticated %}
+                    <li class="watchlist ms-3 me-1">
+                      <a href="{% url 'watchlist' %}">
+                          <i class="fa fa-heart" style="font-size: 26px;color: red; margin-top: 9px" title="Watchlist"></i>
+                          {% if watchlist.count > 0 %}
+                              <span>{{ watchlist.count }}</span>
+                          {% endif %}
+                      </a> 
+                    </li>
+                      <li>
+                          <a href="{% url 'profile' %}"><i class="fa-solid fa-user" style="font-size: 25px;"></i></a>
+                      </li>
+                </div>
+                  {% else %}
+                      <div class="right">
+                          <a href="{% url 'login' %}" class="signin">Login</a>
+                          <a href="{% url 'register' %}" class="register">Register</a>
+                      </div>
+                  {% endif %}
+                <a href="#" id="close"><i class="fas fa-times"></i></a>
+            </ul>
+        </div>
+        <div id="mobile">
+            <i id="bar" class="fas fa-outdent"></i>
+        </div>
+    </section>
+
+        {% block body %}
+        {% endblock %}
+
+        <footer class="section-p1">
+          <div class="col">
+              <img src="{% static 'auctions/images/logo.png' %}" class="logo" alt="">
+              <h4>Contact</h4>
+              <p><strong>Address: </strong> 9, avenue Alaraar, hay Ryad</p>
+              <p><strong>Phone: </strong> 0539385674</p>
+              <p><strong>Hours: </strong> 10:00 - 18:00, Mon - Sat</p>
+              <div class="follow">
+                  <h4>Follow us</h4>
+                  <div class="icon">
+                      <i class="fab fa-facebook-f"></i>
+                      <i class="fab fa-twitter"></i>
+                      <i class="fab fa-instagram"></i>
+                      <i class="fab fa-pinterest-p"></i>
+                      <i class="fab fa-youtube"></i>
+                  </div>
+              </div>
+          </div>
+  
+          <div class="col">
+              <h4>About</h4>
+              <a href="{% url 'about' %}">About Us</a>
+              <a href="#">Delivery Information</a>
+              <a href="#">Privacy Policy</a>
+              <a href="#">Terms & Conditions</a>
+              <a href="{% url 'contact' %}">Contact Us</a>
+          </div>
+  
+          <div class="col">
+              <h4>My Account</h4>
+              {% if user.is_authenticated %}
+                <a href="{% url 'register' %}">Create Account</a>
+              {% else %}
+                <a href="{% url 'login' %}">Sign In</a>
+                <a href="{% url 'watchlist' %}">My Watchlist</a>
+                <a href="{% url 'register' %}">Create Account</a>
+              {% endif %}
+              <a href="#">Track My Order</a>
+              <a href="#">Help</a>
+          </div>
+  
+          <div class="col install">
+              <h4>Install App</h4>
+              <p>From App Store or Google Play</p>
+              <div class="row">
+                  <img src="{% static 'auctions/images/app.jpg' %}" alt="">
+                  <img src="{% static 'auctions/images/play.jpg' %}" alt="">
+              </div>
+              <p>Secured Payment Gateways</p>
+              <img src="{% static 'auctions/images/pay.png' %}" alt="">
+          </div>
+  
+          <div class="copyright">
+              <p>&copy; 2023, Auction website designed and developed by Mohamed Abirou.</p>
+          </div>
+      </footer>
+
+
+        <script src="{% static '/auctions/js/script.js' %}"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
+    </body>
+</html>

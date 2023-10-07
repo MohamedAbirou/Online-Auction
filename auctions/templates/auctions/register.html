@@ -1,0 +1,23 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+
+        {% if message %}
+        <p style="color: #842029; background-color: #f8d7da; border-color: #f5c2c7; padding: 1rem 1rem; margin: 0 80px; border-radius: 5px;">{{ message }}</p>
+        {% endif %}
+
+        <section id="form-details3">
+            <h2 style="padding-bottom: 3rem;">Sign Up</h2>
+            <form action="{% url 'register' %}" method="POST">
+                {% csrf_token %}
+                <input class="form-control" autofocus type="text" name="username" placeholder="Username">
+                <input class="form-control" type="email" name="email" placeholder="Email Address">
+                <input class="form-control" type="password" name="password" placeholder="Password">
+                <input class="form-control" type="password" name="confirmation" placeholder="Confirm Password">
+                <button type="submit" style="width: 100%; font-size: 16px" class="normal">Register</button>
+            </form>
+            Already have an account? <a href="{% url 'login' %}">Log In here.</a>
+        </section>
+
+
+{% endblock %}

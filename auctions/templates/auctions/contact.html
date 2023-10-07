@@ -1,0 +1,82 @@
+{% extends 'auctions/layout.html' %}
+{% load static %}
+
+{% block title %}
+    Contact Us
+{% endblock %}
+
+{% block body %}
+<section id="page-header" class="about-header" style="background-image: url('{% static 'auctions/images/banner.png' %}');">
+    <h2>#Let's_Talk</h2>
+    <p>LEAVE A MESSAGE, We love to hear from you!</p>
+</section>
+
+
+<section id="contact-details" class="section-p1">
+    <div class="details">
+        <span>GET IN TOUCH</span>
+        <h2>Visit one of our agency locations or contact us today</h2>
+        <h3>Head Office</h3>
+        <div>
+            <li>
+                <i class="fas fa-map"></i>
+                <p> 9, avenue Alaraar, hay Ryad</p>
+            </li>
+            <li>
+                <i class="fas fa-envelope"></i>
+                <p>eel.business@example.com</p>
+            </li>
+            <li>
+                <i class="fas fa-phone-alt"></i>
+                <p>900-2345-6789</p>
+            </li>
+            <li>
+                <i class="fas fa-clock"></i>
+                <p> Monday to Saturday: 9.00am to 16.00pm</p>
+            </li>
+        </div>
+    </div>
+
+    <div class="map">
+        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d16678.4998172661!2d-6.886183767486183!3d33.95569052691428!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xda71329881187db%3A0xdc9b854f822b41d7!2s9%20Av.%20Al%20Araar%2C%20Rabat!5e0!3m2!1sen!2sma!4v1682279983606!5m2!1sen!2sma" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+    </div>
+</section>
+
+
+<section id="form-details2">
+    <form action="mailto: abiroumohamed58@gmail.com" method="post">
+        <span>LEAVE A MESSAGE</span>
+        <h2>We love to hear from you</h2>
+        <input type="text" name="name" placeholder="Your Name">
+        <input type="text" name="subject" placeholder="Subject">
+        <textarea name="body" id="" cols="30" rows="10" placeholder="Your Message"></textarea>
+        <button class="normal">Submit</button>
+    </form>
+    <div class="people">
+        <div>
+            <img src="{% static 'auctions/images/1.png' %}" alt="">
+            <p><span>John Doe</span> Senior Marketing Manager <br> Phone: +000 0123 000 77 88 <br> Email: contact@example.com</p>
+        </div>
+        <div>
+            <img src="{% static 'auctions/images/2.png' %}" alt="">
+            <p><span>William Smith</span> Senior Marketing Manager <br> Phone: +000 0123 000 77 88 <br> Email: contact@example.com</p>
+        </div>
+        <div>
+            <img src="{% static 'auctions/images/3.png' %}" alt="">
+            <p><span>Emma Stone</span> Senior Marketing Manager <br> Phone: +000 0123 000 77 88 <br> Email: contact@example.com</p>
+        </div>
+    </div>
+</section>
+
+
+<section id="newsletter" class="section-p1 section-m1">
+    <div class="newstext">
+        <h4>Sign Up For Newsletters</h4>
+        <p>Get E-mail updates about our latest shop and <span>special offers.</span></p>
+    </div>
+    <div class="form">
+        <input type="text" placeholder="Your email address">
+        <button class="normal">Sign Up</button>
+    </div>
+</section>
+{% endblock %}

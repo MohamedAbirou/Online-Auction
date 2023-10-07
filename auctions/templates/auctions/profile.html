@@ -1,0 +1,93 @@
+{% extends "auctions/layout.html" %}
+
+{% block title %}
+    Account
+{% endblock %}
+
+{% block body %}
+<div style="padding: 40px 80px">
+    <h1 style="text-align: center; padding-bottom: 20px;">Account</h1>
+
+    <h3>Welcome, <span style="color: #FDD613;">{{ profile.user.username }}</span></h3>
+    <p>Email: {{ profile.user.email }}</p>
+
+    <section id="product1" class="section-p1">
+        <div class="pro-container">
+            {% for listing in user_listings %}
+                <div class="pro">
+                    <a href="{% url 'listing_detail' listing.id %}">
+                    <img src="{{ listing.image_url }}" alt="" />
+                    </a>
+                    <div class="des">
+                    <span>{{ listing.category }}</span>
+                    <h5>{{ listing.title }}</h5>
+                    <div class="star">
+                        <h4>${{ listing.current_bid }}</h4>
+                        <form
+                        action="{% url 'add_to_watchlist' listing.id %}"
+                        method="POST"
+                        >
+                        {% csrf_token %}
+                        <button type="submit" style="border: none; cursor: pointer;background-color: transparent;">
+                            <i
+                            class="fa fa-heart"
+                            style="font-size: 21px; color: red; margin-top: 9px"
+                            title="Watchlist"
+                            ></i>
+                        </button>
+                        </form>
+                        {% if listing.is_active == False %}
+                        <span class="btn btn-danger text-white mt-2 pe-none"
+                        >This is auction is closed.</span
+                        >
+                        {% endif %}
+                    </div>
+                    </div>
+                    <button class="btn btn-danger">
+                        <a href="{% url 'delete_listing' listing.id %}" style="text-decoration: none; color: #fff;">Delete Listing</a>
+                    </button>
+                </div>
+            {% endfor %}
+        </div>
+      </section>
+
+    {% if listings.paginator.num_pages > 0 %}
+        <section id="pagination" class="section-p1">
+        {% if listings.has_previous %}
+            <a href="?page=1">« first</a>
+            <a href="?page={{ listings.previous_page_number }}">previous</a>
+        {% endif %}
+        
+        <span class="current" style="font-size: 20px; font-weight: bold;">
+            Page {{ listings.number }} of {{ listings.paginator.num_pages }}.
+        </span>
+        
+        {% if listings.has_next %}
+            <a href="?page={{ listings.next_page_number }}">next</a>
+            <a href="?page={{ listings.paginator.num_pages }}">last »</a>
+        {% endif %}
+        </section>
+    {% else %}
+        <section id="pagination" class="section-p1 d-none">
+        {% if listings.has_previous %}
+            <a href="?page=1">« first</a>
+            <a href="?page={{ listings.previous_page_number }}">previous</a>
+        {% endif %}
+        
+        <span class="current">
+            Page {{ listings.number }} of {{ listings.paginator.num_pages }}.
+        </span>
+        
+        {% if listings.has_next %}
+            <a href="?page={{ listings.next_page_number }}">next</a>
+            <a href="?page={{ listings.paginator.num_pages }}">last »</a>
+        {% endif %}
+        </section>
+    {% endif %}
+
+    <button class="logout-btn" style="color: #fff; background-color: red; padding: 5px 15px; margin-top: 5rem; border: none; border-radius: 5px; width: 100%;">
+        <a href="{% url 'logout' %}" style="display: block; text-decoration: none; color: #fff; width: auto;">Log Out</a>
+    </button>
+</div>
+
+{% endblock %}

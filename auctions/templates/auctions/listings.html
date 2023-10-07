@@ -1,0 +1,95 @@
+{% extends "auctions/layout.html" %}
+{% load static %}
+
+{% block body %}
+
+<section id="page-header" style="background-image: url('{% static '/auctions/images/banner1.jpg' %}');">
+  <h2>#BestOnTheMarket</h2>
+  <p>Save more with coupons & up to 70% off!</p>
+</section>
+
+<div class="mt-5">
+  <ul class="categories">
+    {% for category in categories %}
+      <li>
+        <a href="{% url 'filtered_listings' category.name %}" class="home">{{ category.name }}</a>
+      </li>
+    {% endfor %}
+  </ul>
+</div>
+
+
+<section id="product1" class="section-p1">
+  <div class="pro-container">
+    {% for listing in listings %}
+        <div class="pro">
+                <a href="{% url 'listing_detail' listing.id %}">
+                    <img src="{{ listing.image_url }}" alt="">
+                </a>
+                    <div class="des">
+                        <span>{{ listing.category }}</span>
+                        <h5>{{ listing.title }}</h5>
+                        <div class="star">
+                            <h4>${{ listing.current_bid }}</h4>
+                            <form action="{% url 'add_to_watchlist' listing.id %}" method="POST">
+                                {% csrf_token %}
+                                <button type="submit" style="border: none; cursor: pointer;background-color: transparent;"><i class="fa fa-heart" style="font-size: 21px;color: red; margin-top: 9px;" title="Watchlist"></i></button>
+                            </form>
+                            {% if listing.is_active == False %}
+                                <span class="btn btn-danger text-white mt-2 pe-none">This is auction is closed.</span>
+                            {% endif %}
+                        </div>
+                    </div>
+            </div>
+        {% endfor %}
+  </div>
+</section>
+
+
+{% if listings.paginator.num_pages > 0 %}
+    <section id="pagination" class="section-p1">
+      {% if listings.has_previous %}
+          <a href="?page=1">« first</a>
+          <a href="?page={{ listings.previous_page_number }}">previous</a>
+      {% endif %}
+    
+      <span class="current" style="font-size: 20px; font-weight: bold;">
+          Page {{ listings.number }} of {{ listings.paginator.num_pages }}.
+      </span>
+    
+      {% if listings.has_next %}
+          <a href="?page={{ listings.next_page_number }}">next</a>
+          <a href="?page={{ listings.paginator.num_pages }}">last »</a>
+      {% endif %}
+    </section>
+  {% else %}
+    <section id="pagination" class="section-p1 d-none">
+      {% if listings.has_previous %}
+          <a href="?page=1">« first</a>
+          <a href="?page={{ listings.previous_page_number }}">previous</a>
+      {% endif %}
+    
+      <span class="current">
+          Page {{ listings.number }} of {{ listings.paginator.num_pages }}.
+      </span>
+    
+      {% if listings.has_next %}
+          <a href="?page={{ listings.next_page_number }}">next</a>
+          <a href="?page={{ listings.paginator.num_pages }}">last »</a>
+      {% endif %}
+    </section>
+  {% endif %}
+
+
+<section id="newsletter" class="section-p1 section-m1">
+  <div class="newstext">
+      <h4>Sign Up For Newsletters</h4>
+      <p>Get E-mail updates about our latest shop and <span>special offers.</span></p>
+  </div>
+  <div class="form">
+      <input type="text" placeholder="Your email address">
+      <button class="normal">Sign Up</button>
+  </div>
+</section>
+  
+{% endblock %}
