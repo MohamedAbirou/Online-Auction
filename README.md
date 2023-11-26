@@ -1,4 +1,5 @@
 # Online-Auction
+this project uses technologies like Python, Django, Jinja templates, CSS, vanilla JavaScript and Postgresql.
 
 ![Online Auctions](https://github.com/Liam-Piro/Online-Auction/assets/109366637/31843f32-aa2a-4717-8528-e2f7d6c1f305)
 ![Online Auctions (1)](https://github.com/Liam-Piro/Online-Auction/assets/109366637/e7bef224-af0c-482f-9b1e-e9b76877b317)
